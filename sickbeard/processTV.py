@@ -276,7 +276,7 @@ def processFile(fileName, downloadDir=None, nzbName=None):
             season = result.seasonnumber if result.seasonnumber != None else 1
             episodes = result.episodenumbers
             
-            returnStr += logHelper("Ended up with season {0} and episodes {1}".format(season, episodes), logger.DEBUG)
+            returnStr += logHelper("Ended up with season {0}, series name {1} and episodes {2}".format(season, result.seriesname, episodes), logger.DEBUG)
             
         except tvnamer_exceptions.InvalidFilename:
             returnStr += logHelper("Unable to parse the filename "+curName+" into a valid episode", logger.DEBUG)
@@ -318,8 +318,10 @@ def processFile(fileName, downloadDir=None, nzbName=None):
             returnStr += logHelper("Looking up show in DB instead", logger.DEBUG)
             showInfo = helpers.searchDBForShow(result.seriesname)
 
-        if showInfo and season == None:
+        if showInfo:
             tvdb_id = showInfo[0]
+
+        if showInfo and season == None:
             myDB = db.DBConnection()
             numseasonsSQlResult = myDB.select("SELECT COUNT(DISTINCT season) as numseasons FROM tv_episodes WHERE showid = ? and season != 0", [tvdb_id])
             numseasons = numseasonsSQlResult[0][0]
