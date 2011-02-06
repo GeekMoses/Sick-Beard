@@ -10,7 +10,7 @@ $(document).ready(function(){
             if (this.checked == true) {
                 epArr.push($(this).attr('id'))
             }
-      
+
         });  
 
         if (epArr.length == 0)
@@ -35,7 +35,27 @@ $(document).ready(function(){
             } 
         });
     });
-  
+
+    // selects all visible episode checkboxes.
+    $('.seriesCheck').click(function(){
+        $('.epCheck:visible').each(function(){
+                this.checked = true
+        });
+        $('.seasonCheck:visible').each(function(){
+                this.checked = true
+        })
+    });
+
+    // clears all visible episode checkboxes and the season selectors
+    $('.clearAll').click(function(){
+        $('.epCheck:visible').each(function(){
+                this.checked = false
+        });
+        $('.seasonCheck:visible').each(function(){
+                this.checked = false
+        });
+    });
+
     // handle the show selection dropbox
     $('#pickShow').change(function(){
         var sbRoot = $('#sbRoot').val()
@@ -54,7 +74,7 @@ $(document).ready(function(){
         $('tr.'+whichClass).each(function(i){
             $(this).toggle();
         });
-    });        
+    }); 
 
     // initially show/hide all the rows according to the checkboxes
     $("#checkboxControls input").each(function(e){
@@ -93,8 +113,20 @@ $(document).ready(function(){
                 $(this).show()
                 $('#'+seasonNo+'-cols').show()
             }
-         
+
          });
-                                             
     }
+
+    $.fn.showHideNote = function() {
+            var selectedValue = $("#statusSelect :selected").val();
+            if (selectedValue > 50)
+                $('#statusNote').show();
+            else
+                $('#statusNote').hide();
+    };
+    $('#statusSelect').change(function(){
+        $(this).showHideNote();
+    });
+   $(this).showHideNote();
+
 });
